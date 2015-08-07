@@ -126,11 +126,13 @@
 
     <span class="pr-filter-item">
 
-        <span class="pr-filter-item-text" data-bind="click:OnEditFilter">
-            <span data-bind="text: Name"></span>
-            <span data-bind="text: ValueOperatorText"></span>
-            <span data-bind="text: Value"></span>
-
+        <span class="pr-filter-item-text">
+            <span data-bind="click:OnEditFilter">
+                <span data-bind="text: Name"></span>
+                <span data-bind="text: ValueOperatorText"></span>
+                <span data-bind="text: Value"></span>
+            </span>
+    
             <!--ko if: EnableGroupFilterCheckbox() -->
             <input class="pr-filter-item-check" type="checkbox" data-bind="checked: GroupFilterCheckbox, enable: GroupFilterCheckboxEnableAttr" />
             <!--/ko-->

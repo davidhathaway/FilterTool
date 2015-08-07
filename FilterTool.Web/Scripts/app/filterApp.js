@@ -5,7 +5,7 @@ var FilterAppKoModel = (function () {
     function FilterAppKoModel() {
         var _this = this;
         this.AppTitle = ko.computed(function () {
-            return "Filters 123";
+            return "Filters Tool";
         });
         this.FilterGroups = ko.observableArray([]);
         this.FilterGroupOperators = [];
@@ -446,6 +446,7 @@ var FilterItemKoModel = (function () {
             var group = _this.Group();
             var count = 0;
             var filters = group.FilterItems();
+            var self = _this;
             for (var i = 0; i < filters.length; i++) {
                 if (filters[i].GroupFilterCheckbox()) {
                     count++;
@@ -476,7 +477,7 @@ var FilterItemKoModel = (function () {
     };
     FilterItemKoModel.prototype.UpdateCanGroup = function () {
         if (this.Group() != null) {
-            var hasChildren = this.Group().Children().length > 0;
+            var hasChildren = this.Group().HasChildren();
             if (hasChildren) {
                 return this.CanGroup(this.Group().FilterItems().length > 1);
             }

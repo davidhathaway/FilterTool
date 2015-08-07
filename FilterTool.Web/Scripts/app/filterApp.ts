@@ -30,7 +30,7 @@ class FilterAppKoModel
 
     constructor()
     {
-        this.AppTitle = ko.computed(() => { return "Filters 123" });
+        this.AppTitle = ko.computed(() => { return "Filters Tool" });
         this.FilterGroups = ko.observableArray([]);
         this.FilterGroupOperators = [];
         this.FilterGroupOperators.push(new FilterOperator("And","&&", "1"));
@@ -644,6 +644,9 @@ class FilterItemKoModel
             var group = this.Group();
             var count = 0;
             var filters = group.FilterItems();
+            var self = this;
+        
+
             for (var i = 0; i < filters.length; i++) {
                 if (filters[i].GroupFilterCheckbox()) {
                     count++;
@@ -672,9 +675,6 @@ class FilterItemKoModel
 
         });
 
-
-
-
         this.UpdateCanGroup();
     }
     OnOperatorClick() {
@@ -688,7 +688,7 @@ class FilterItemKoModel
     {
         if (this.Group() != null)
         {
-            var hasChildren = this.Group().Children().length > 0;
+            var hasChildren = this.Group().HasChildren()
 
             if (hasChildren)
             {
