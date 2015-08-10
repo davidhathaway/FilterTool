@@ -1,0 +1,140 @@
+﻿<div class="row">
+
+    <div class="col-lg-12">
+        <h4 data-bind="text: AppTitle"></h4>
+        <div class="pr-filter-container">
+            <span data-bind="template: { name: 'pr-filter-group', foreach: FilterGroups, as: 'group'}"></span>
+            <!-- ko if: (ShowAdd() && !InlineDialogStarted()) -->
+            <button data-bind="click: OnAddFirstGroup" class="btn btn-xs btn-success" type="button" title="Add First Group Filter"><i class="glyphicon glyphicon-plus"></i> <b>{ }</b></button>
+            <!-- /ko -->
+        </div>
+    </div>
+</div>
+
+<!-- ko if: InlineDialogStarted -->
+<div class="row">
+    <div class="col-lg-12" id="inline-dialog-template" data-bind="template: {name: InlineDialogTemplateName }"></div>
+    <div class="col-lg-12">
+        <button data-bind="click: OnCancelInlineDialog" class="btn btn-danger" type="button" title="Cancel Group Filter"><i class="glyphicon glyphicon-remove"></i></button>
+        <button data-bind="click: OnOkInlineDialog" class="btn btn-success" type="button" title="Finish Group Filter"><i class="glyphicon glyphicon-ok"></i></button>
+    </div>
+</div>
+<!-- /ko -->
+
+<script type="text/html" id="pr-group-filter">
+
+    <p data-bind="text: InlineDialogText"></p>
+
+</script>
+
+<script type="text/html" id="pr-select-op">
+
+    <p data-bind="text: InlineDialogText"></p>
+
+    <label for="select-op-options">
+        <input type="radio" name="select-op-options" value="1" autocomplete="off" data-bind="checked: SelectedOperator"> And
+    </label>
+    <label for="select-op-options">
+        <input type="radio" name="select-op-options" value="2" autocomplete="off" data-bind="checked: SelectedOperator"> Or
+    </label>
+
+</script>
+
+<script type="text/html" id="pr-crud-filter">
+
+    <p data-bind="text: InlineDialogText"></p>
+
+    <div class="form-group">
+        <label for="filter-name"></label>
+        <input name="filter-name" class="form-control" type="text" data-bind="value: FilterName" />
+    </div>
+
+    <div class="form-group">
+        <label for="filter-op"></label>
+        <select name="filter-op" class="form-control" data-bind="value: FilterOp">
+            <option value="1">Equals To</option>
+            <option value="2">Not Equal To</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="filter-value"></label>
+        <input name="filter-value" class="form-control" type="text" data-bind="value: FilterValue" />
+    </div>
+
+    <!-- ko if: ShowFilterGroupOp -->
+    <div class="form-group">
+        <label for="filter-group-op">
+            <input type="radio" name="filter-group-op" value="1" autocomplete="off" data-bind="checked: FilterGroupOp"> And
+        </label>
+        <label for="filter-group-op">
+            <input type="radio" name="filter-group-op" value="2" autocomplete="off" data-bind="checked: FilterGroupOp"> Or
+        </label>
+    </div>
+    <!-- /ko -->
+
+</script>
+
+<script type="text/html" id="pr-filter-group">
+
+    <span class="pr-filter-group">
+
+
+
+        <!--ko if: ShowGroupOperator -->
+        <span class="pr-group-op">
+            <span class="pr-filter-item-text" data-bind="text: GroupOperatorText, click: OnGroupOperatorClick"></span>
+        </span>
+        <!--/ko-->
+
+        <span class="pr-filter-group-brace">{</span>
+
+        <!--ko if: !App.InlineDialogStarted() -->
+        <button data-bind="click: OnAddFilter" class="btn btn-xs btn-success" type="button" title="And/Or"><i class="glyphicon glyphicon-plus"></i><i class="glyphicon glyphicon-filter"></i></button>
+        <!--/ko-->
+
+        <span class="pr-filter-items" data-bind="template: { name: 'pr-filter-item', foreach: FilterItems }"></span>
+
+        <span data-bind="template: { name: 'pr-filter-group', foreach: Children, as: 'group'}">
+        </span>
+
+        <span class="pr-filter-group-brace">}</span>
+
+    </span>
+
+
+</script>
+
+<script type="text/html" id="pr-filter-item">
+
+
+    <!--ko if: (HasGroupOperator() && !IsFirst()) -->
+    <span class="pr-filter-item-op">
+        <span class="pr-filter-item-text" data-bind="text: GroupOperatorText, click: OnOperatorClick"></span>
+    </span>
+    <!--/ko-->
+
+    <span class="pr-filter-item">
+
+        <span class="pr-filter-item-text">
+            <span data-bind="click:OnEditFilter">
+                <span data-bind="text: Name"></span>
+                <span data-bind="text: ValueOperatorText"></span>
+                <span data-bind="text: Value"></span>
+            </span>
+
+            <!--ko if: EnableGroupFilterCheckbox() -->
+            <input class="pr-filter-item-check" type="checkbox" data-bind="checked: GroupFilterCheckbox, enable: GroupFilterCheckboxEnableAttr" />
+            <!--/ko-->
+        </span>
+
+        <!--ko if: !EnableGroupFilterCheckbox() -->
+        <button data-bind="click: OnRemoveFilter" class="btn btn-xs btn-danger pr-filter-item-remove"><i class="glyphicon glyphicon-remove"></i></button>
+        <!--/ko-->
+        <!--ko if: (CanGroup()  && !EnableGroupFilterCheckbox()) -->
+        <button data-bind="click: OnGroupFilter" class="btn btn-xs btn-success pr-filter-item-remove"><i class="glyphicon"></i>{ }</button>
+        <!--/ko-->
+    </span>
+
+
+</script>
